@@ -11,5 +11,7 @@ public interface AuthorService {
 
     Optional<AuthorEntity> getAuthor(Long id);
 
-    boolean isExist(Long id);
+    boolean isExists(Long id);
+
+    AuthorEntity partialUpdate(Long id, AuthorEntity authorEntity);
 }

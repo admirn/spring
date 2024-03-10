@@ -1,11 +1,18 @@
 package com.admirnurkovic.bookStore.controllers;
 
+import com.admirnurkovic.bookStore.domain.dto.AuthorDto;
 import com.admirnurkovic.bookStore.domain.dto.BookDto;
 import com.admirnurkovic.bookStore.domain.entities.BookEntity;
 import com.admirnurkovic.bookStore.mappers.Mapper;
 import com.admirnurkovic.bookStore.services.BookService;
+import com.admirnurkovic.bookStore.validators.groups.BookPatchValidationGroup;
+import com.admirnurkovic.bookStore.validators.groups.BookPostValidationGroup;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
@@ -23,23 +31,32 @@ public class BookController {
        this.bookMapper = bookMapper;
    }
 
-    @PutMapping("/books/{isbn}")
-    public ResponseEntity<BookDto> createBook(@PathVariable("isbn") String isbn,
-                                              @RequestBody BookDto bookDto){
+    @PutMapping("/{isbn}")
+    public ResponseEntity<BookDto> createUpdateBook(@PathVariable("isbn") String isbn,
+                                               @Validated(BookPostValidationGroup.class) @RequestBody BookDto bookDto){
         BookEntity bookEntity = bookMapper.mapFrom(bookDto);
-        BookEntity resultBook = bookService.saveBook(isbn, bookEntity);
-        return new ResponseEntity<>(bookMapper.mapTo(resultBook), HttpStatus.CREATED);
+        boolean bookexists = bookService.isExists(isbn);
+        BookEntity resultBook = bookService.createUpdateBook(isbn, bookEntity);
+        BookDto saveUpdateBook = bookMapper.mapTo(resultBook);
+
+
+        if(bookexists){
+            //update
+            return new ResponseEntity<>(saveUpdateBook, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(saveUpdateBook, HttpStatus.CREATED);
+        }
+
+
     }
 
-    @GetMapping(path = "/books")
-    public ResponseEntity<List<BookDto>> getAllBooks(){
-       List<BookEntity> list = bookService.getAllBooks();
-       return new ResponseEntity<>(list.stream()
-               .map(bookMapper::mapTo)
-               .collect(Collectors.toList()), HttpStatus.FOUND);
+    @GetMapping
+    public ResponseEntity<Page<BookDto>> getAllBooks(Pageable pagable){
+       Page<BookEntity> list = bookService.getAllBooks(pagable);
+       return new ResponseEntity<>(list.map(bookMapper::mapTo), HttpStatus.OK);
     }
 
-    @GetMapping(path="/books/{isbn}")
+    @GetMapping(path="/{isbn}")
     public ResponseEntity<BookDto> getSingleBook(@PathVariable("isbn") String isbn){
         Optional<BookEntity> book = bookService.getSingleBook(isbn);
         return book.map(bookEntity -> {
@@ -49,6 +66,25 @@ public class BookController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)
         );
     }
+
+    @PatchMapping("/{isbn}")
+    public ResponseEntity<BookDto> partialUpdateBook(
+            @PathVariable("isbn") String isbn,
+            @Validated(BookPatchValidationGroup.class) @RequestBody BookDto bookDto
+    ){
+       if(!bookService.isExists(isbn)){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       if(bookDto.getAuthorEntity() != null && bookDto.getAuthorEntity().getId() == null){
+           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+       }
+
+
+       BookEntity bookEntity = bookMapper.mapFrom((bookDto));
+       BookEntity updatedBook = bookService.partialUpdate(isbn, bookEntity);
+       return new ResponseEntity<>(bookMapper.mapTo(updatedBook), HttpStatus.OK);
+    }
+
 
 
 

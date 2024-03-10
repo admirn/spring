@@ -1,11 +1,13 @@
 package com.admirnurkovic.bookStore.domain.dto;
 
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+import com.admirnurkovic.bookStore.validators.groups.AuthorPatchValidationGroup;
+import com.admirnurkovic.bookStore.validators.groups.AuthorPostValidationGroup;
+import com.admirnurkovic.bookStore.validators.annotations.ValidCountryCode;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
+
 
 @Data
 @AllArgsConstructor
@@ -13,11 +15,10 @@ import org.springframework.lang.NonNull;
 @Builder
 public class AuthorDto {
     private Long id;
-
-    @NonNull
+    @NotBlank(message = "Name si mandatory", groups = {AuthorPostValidationGroup.class, AuthorPatchValidationGroup.class})
     private String name;
-
-    @NonNull
-    @Size(min = 18)
+    @Min(value = 18, groups = {AuthorPostValidationGroup.class, AuthorPatchValidationGroup.class})
     private Integer age;
+    @ValidCountryCode(groups = {AuthorPostValidationGroup.class, AuthorPatchValidationGroup.class})
+    private String countryCode;
 }
