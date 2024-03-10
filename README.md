@@ -11,6 +11,7 @@ This is a simple RESTful API for a BookStore implemented using Spring Boot.
 
 - Java 19
 - Spring Boot
+- Maven
 - Spring Security
 - JSON Web Tokens (JWT)
 - ModelMapper
@@ -19,3 +20,19 @@ This is a simple RESTful API for a BookStore implemented using Spring Boot.
 - Mockito
 - Postgres
 - Docker
+- Maven Spotless
+
+
+## Getting Started
+
+### Prerequisites
+
+- Java 11
+- Maven
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone 
