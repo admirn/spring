@@ -35,4 +35,4 @@ This is a simple RESTful API for a BookStore implemented using Spring Boot.
 1. Clone the repository:
 
    ```bash
-   git clone 
+   git clone https://github.com/admirn/spring.git
