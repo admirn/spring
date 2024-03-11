@@ -1,6 +1,9 @@
 package com.admirnurkovic.bookStore.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +27,11 @@ public class UserEntity implements UserDetails {
     private Integer id;
     private String firstname;
     private String lastname;
+    @Email
+    @NotBlank(message = "Email is required")
     private String email;
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
 
