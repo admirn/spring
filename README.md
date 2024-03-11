@@ -59,7 +59,7 @@ To use the API, users must first register. Send a POST request to /auth/register
 
 ```bash
 {
-   "fistName"": "yourfirstname,
+   "fistName"": "yourfirstname",
    "lastname": "yourlastname"
    "email": "youreamil",
    "password": "yourpassword"
