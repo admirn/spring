@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.Collection;
+import java.util.List;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,28 +19,24 @@ import java.util.List;
 @Table(name = "users")
 public class UserEntity implements UserDetails {
 
-
     @Id
     @GeneratedValue
-
     private Integer id;
+
     private String firstname;
     private String lastname;
+
     @Email
     @NotBlank(message = "Email is required")
     private String email;
+
     @NotBlank(message = "Password is required")
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
-
-
     @Enumerated(EnumType.STRING)
     private Role role;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Token> tokens;
-//
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

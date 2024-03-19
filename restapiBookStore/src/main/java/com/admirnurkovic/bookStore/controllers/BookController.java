@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class BookController {
 
     private final BookService bookService;
-    private Mapper<BookEntity, BookDto> bookMapper;
+    private final Mapper<BookEntity, BookDto> bookMapper;
 
    public BookController(BookService bookService, Mapper<BookEntity, BookDto> bookMapper ){
        this.bookService = bookService;

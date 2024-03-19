@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class AuthorControllerIntegrationTests {
 
     private final MockMvc mockMvc;
-    ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public AuthorControllerIntegrationTests(MockMvc mockMvc){

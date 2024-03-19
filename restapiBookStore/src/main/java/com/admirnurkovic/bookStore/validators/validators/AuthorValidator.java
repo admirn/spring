@@ -10,7 +10,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
 
 @AllArgsConstructor
 @Slf4j
@@ -21,9 +20,6 @@ public class AuthorValidator implements ConstraintValidator<ValidAuthor, AuthorD
     @Override
     public boolean isValid(AuthorDto authorDto, ConstraintValidatorContext constraintValidatorContext) {
 
-//        if(authorDto == null || authorDto.getId() == null ){
-//            return false;
-//        }
         AuthorEntity authorEntity = authorMapper.mapFrom(authorDto);
         log.info("User exist in db: "+authorEntity.getId());
         return authorService.isExists(authorEntity.getId());
