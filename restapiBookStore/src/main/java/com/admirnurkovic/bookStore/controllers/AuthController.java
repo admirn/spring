@@ -1,9 +1,9 @@
 package com.admirnurkovic.bookStore.controllers;
 
+import com.admirnurkovic.bookStore.domain.dto.AuthenticationRequest;
+import com.admirnurkovic.bookStore.domain.dto.AuthenticationResponse;
+import com.admirnurkovic.bookStore.domain.dto.RegistrationRequest;
 import com.admirnurkovic.bookStore.services.AuthenticationService;
-import com.admirnurkovic.bookStore.util.AuthenticationRequest;
-import com.admirnurkovic.bookStore.util.AuthenticationResponse;
-import com.admirnurkovic.bookStore.util.RegistrationRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,12 @@ public class AuthController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @Valid @RequestBody   RegistrationRequest request
-    ){
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(
-            @Valid @RequestBody AuthenticationRequest request
-    ){
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
 }

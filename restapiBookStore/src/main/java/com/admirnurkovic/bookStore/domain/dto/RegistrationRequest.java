@@ -1,4 +1,4 @@
-package com.admirnurkovic.bookStore.util;
+package com.admirnurkovic.bookStore.domain.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,11 +16,13 @@ public class RegistrationRequest {
 
     @NotBlank
     private String firstName;
+
     private String lastName;
+
     @NotNull
     @Email
     private String email;
+
     @NotNull
     private String password;
-
 }

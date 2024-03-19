@@ -1,4 +1,4 @@
-package com.admirnurkovic.bookStore.util;
+package com.admirnurkovic.bookStore.domain.dto;
 
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -11,6 +11,7 @@ public class AuthenticationRequest {
     @NonNull
     @Email
     private String email;
+
     @NonNull
     private String password;
 }

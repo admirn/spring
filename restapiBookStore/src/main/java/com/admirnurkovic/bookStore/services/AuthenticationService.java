@@ -1,9 +1,8 @@
 package com.admirnurkovic.bookStore.services;
 
-import com.admirnurkovic.bookStore.services.JwtService;
-import com.admirnurkovic.bookStore.util.AuthenticationRequest;
-import com.admirnurkovic.bookStore.util.AuthenticationResponse;
-import com.admirnurkovic.bookStore.util.RegistrationRequest;
+import com.admirnurkovic.bookStore.domain.dto.AuthenticationRequest;
+import com.admirnurkovic.bookStore.domain.dto.AuthenticationResponse;
+import com.admirnurkovic.bookStore.domain.dto.RegistrationRequest;
 import com.admirnurkovic.bookStore.domain.entities.Role;
 import com.admirnurkovic.bookStore.domain.entities.UserEntity;
 import com.admirnurkovic.bookStore.repositories.UserRepository;
@@ -35,16 +34,12 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder().token(jwtToken).build();
-
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
-               new UsernamePasswordAuthenticationToken(request.getEmail(),
-                request.getPassword())
-        );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        var user = repository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

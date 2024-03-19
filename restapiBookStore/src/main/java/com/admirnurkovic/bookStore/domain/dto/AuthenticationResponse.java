@@ -1,5 +1,4 @@
-package com.admirnurkovic.bookStore.util;
-
+package com.admirnurkovic.bookStore.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
